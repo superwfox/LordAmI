@@ -1,0 +1,6 @@
+name: LordAmI
+version: '1.0'
+main: sudark2.Sudark.lordAmI.LordAmI
+api-version: '1.21'
+load: STARTUP
+authors: [ Sudark ]
