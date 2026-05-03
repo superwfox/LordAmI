@@ -22,14 +22,14 @@ public final class Effects {
         Location at = pet.getLocation().add(0, pet.getHeight() / 2.0, 0);
         pet.getWorld().spawnParticle(Particle.DUST_COLOR_TRANSITION, at,
                 20, 0.4, 0.4, 0.4, 0, YELLOW);
-        issuer.playSound(issuer.getLocation(), Sound.UI_BUTTON_CLICK, 0.6f, 1.7f);
+        issuer.playSound(issuer.getLocation(), Sound.BLOCK_BEEHIVE_DRIP, 0.8f, 1.4f);
     }
 
     public static void attackBurst(LivingEntity target, Player issuer) {
         Location head = target.getEyeLocation().add(0, 0.6, 0);
         target.getWorld().spawnParticle(Particle.DUST_COLOR_TRANSITION, head,
                 12, 0.25, 0.25, 0.25, 0, RED_BIG);
-        issuer.playSound(issuer.getLocation(), Sound.ENTITY_BLAZE_HURT, 0.7f, 1.4f);
+        issuer.playSound(issuer.getLocation(), Sound.ENTITY_BEE_STING, 0.9f, 1.2f);
     }
 
     public static void attackPulse(LivingEntity target) {
@@ -58,7 +58,7 @@ public final class Effects {
             w.spawnParticle(Particle.END_ROD, p.getX(), p.getY(), p.getZ(),
                     1, 0, 0, 0, 0);
         }
-        issuer.playSound(issuer.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 0.7f, 1.3f);
+        issuer.playSound(issuer.getLocation(), Sound.BLOCK_BEEHIVE_EXIT, 0.9f, 1.2f);
     }
 
     public static void arrivedRing(Plugin plugin, Location anchor) {
@@ -88,7 +88,7 @@ public final class Effects {
                             1, 0, 0.05, 0, 0);
                 }
                 if (tick == 0) {
-                    w.playSound(anchor, Sound.BLOCK_BEACON_ACTIVATE, 0.5f, 1.6f);
+                    w.playSound(anchor, Sound.BLOCK_BEEHIVE_ENTER, 0.9f, 1.2f);
                 }
                 tick++;
             }

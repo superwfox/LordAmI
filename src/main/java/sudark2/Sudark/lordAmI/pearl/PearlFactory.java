@@ -3,6 +3,7 @@ package sudark2.Sudark.lordAmI.pearl;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -76,7 +77,7 @@ public final class PearlFactory {
         return new ItemStack(Material.ENDER_EYE);
     }
 
-    public static boolean hasPlain(org.bukkit.entity.Player p) {
+    public static boolean hasPlain(Player p) {
         for (ItemStack it : p.getInventory().getContents()) {
             if (it == null) continue;
             if (it.getType() != Material.ENDER_EYE) continue;
@@ -86,7 +87,7 @@ public final class PearlFactory {
         return false;
     }
 
-    public static boolean consumePlain(org.bukkit.entity.Player p) {
+    public static boolean consumePlain(Player p) {
         for (ItemStack it : p.getInventory().getContents()) {
             if (it == null) continue;
             if (it.getType() != Material.ENDER_EYE) continue;

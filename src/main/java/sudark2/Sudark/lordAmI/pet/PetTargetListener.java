@@ -16,19 +16,19 @@ public final class PetTargetListener implements Listener {
         Pet pet = PetManager.getFromEntity(le);
         if (pet == null) return;
 
+        if (e.getTarget() instanceof Player p) {
+            String qq = Identity.of(p);
+            if (qq != null && qq.equals(pet.owner)) {
+                e.setCancelled(true);
+                return;
+            }
+        }
+
         if (pet.state == PetState.ATTACKING) {
             if (pet.attackTargetUuid == null || e.getTarget() == null
                     || !pet.attackTargetUuid.equals(e.getTarget().getUniqueId())) {
                 e.setCancelled(true);
             }
-            return;
         }
-
-        if (e.getTarget() instanceof Player p) {
-            String qq = Identity.of(p);
-            if (qq != null && qq.equals(pet.owner)) e.setCancelled(true);
-        }
-
-
     }
 }

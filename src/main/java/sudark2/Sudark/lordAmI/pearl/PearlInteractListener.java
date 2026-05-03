@@ -124,7 +124,7 @@ public final class PearlInteractListener implements Listener {
         PetIdStore.onDeployed(snap, le.getUniqueId(), w.getName());
 
         p.getInventory().setItemInMainHand(PearlFactory.createPlain());
-        w.playSound(spawn, Sound.ITEM_TRIDENT_RETURN, 0.7f, 1.4f);
+        w.playSound(spawn, Sound.BLOCK_BEEHIVE_EXIT, 0.9f, 1.0f);
         p.sendActionBar(Msg.cn("§e已放置"));
     }
 
@@ -164,7 +164,7 @@ public final class PearlInteractListener implements Listener {
             if (pet.entity instanceof Mob m) m.setTarget(null);
             n++;
         }
-        p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 0.6f, 1.5f);
+        p.playSound(p.getLocation(), Sound.BLOCK_BEEHIVE_WORK, 0.8f, 1.4f);
         p.sendActionBar(Msg.cn("§e召集了 §f" + n + "§e 只生物" + (sneaking ? " §7(含寻路)" : "")));
     }
 
@@ -187,6 +187,11 @@ public final class PearlInteractListener implements Listener {
             e.setCancelled(true);
             return;
         }
+        if (!PearlFactory.hasPlain(p)) {
+            e.setCancelled(true);
+            p.sendActionBar(Msg.cn("§6需要末影之眼才能收回"));
+            return;
+        }
 
         e.setCancelled(true);
         recall(p, le);
@@ -200,6 +205,7 @@ public final class PearlInteractListener implements Listener {
             le.remove();
             return;
         }
+        PearlFactory.consumePlain(p);
         EntityIO.capture(le, snap);
         TeamManager.removeEntity(le);
         PetManager.unregister(le.getUniqueId());
@@ -213,7 +219,7 @@ public final class PearlInteractListener implements Listener {
         } else {
             p.getInventory().addItem(pearl);
         }
-        p.getWorld().playSound(was, Sound.ENTITY_ENDERMAN_TELEPORT, 0.7f, 1.6f);
+        p.getWorld().playSound(was, Sound.BLOCK_BEEHIVE_ENTER, 0.9f, 1.0f);
         p.sendActionBar(Msg.cn("§e已收回"));
     }
 
@@ -251,8 +257,6 @@ public final class PearlInteractListener implements Listener {
 
         selected.state = PetState.ATTACKING;
         selected.attackTargetUuid = le.getUniqueId();
-        selected.anchor = null;
-        selected.pathingArrived = false;
         if (selected.entity instanceof Mob m) m.setTarget(le);
         Effects.attackBurst(le, p);
         SelectionState.clear(qq);

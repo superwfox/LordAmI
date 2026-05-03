@@ -41,9 +41,14 @@ public final class EggCaptureListener implements Listener {
             p.sendActionBar(Msg.cn("§6未绑定 QQ,无法收复"));
             return;
         }
+        if (!PearlFactory.hasPlain(p)) {
+            p.sendActionBar(Msg.cn("§6需要末影之眼才能收复"));
+            return;
+        }
 
         double chance = ProbabilityHud.chance(p, target);
         if (RNG.nextDouble() < chance) {
+            PearlFactory.consumePlain(p);
             String petId = PetManager.capture(qq, target);
             target.remove();
             PetSnapshot snap = PetIdStore.get(petId);

@@ -94,18 +94,27 @@ public final class PetTicker extends BukkitRunnable {
 
     private void tickAttacking(Mob mob, Pet pet, boolean emitPulse) {
         if (pet.attackTargetUuid == null) {
-            pet.state = PetState.FOLLOW;
+            endAttack(mob, pet);
             return;
         }
         org.bukkit.entity.Entity tgt = Bukkit.getEntity(pet.attackTargetUuid);
         if (!(tgt instanceof LivingEntity le) || le.isDead() || !le.isValid()) {
-            pet.state = PetState.FOLLOW;
-            pet.attackTargetUuid = null;
-            mob.setTarget(null);
+            endAttack(mob, pet);
             return;
         }
         if (mob.getTarget() != le) mob.setTarget(le);
         if (emitPulse) Effects.attackPulse(le);
+    }
+
+    private void endAttack(Mob mob, Pet pet) {
+        pet.attackTargetUuid = null;
+        mob.setTarget(null);
+        if (pet.anchor != null) {
+            pet.state = PetState.PATHING;
+            pet.pathingArrived = false;
+        } else {
+            pet.state = PetState.FOLLOW;
+        }
     }
 
     private Player findOwner(Pet pet) {
