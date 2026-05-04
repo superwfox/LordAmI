@@ -49,9 +49,17 @@ public final class PearlInteractListener implements Listener {
         Action a = e.getAction();
 
         if (a == Action.RIGHT_CLICK_BLOCK || a == Action.RIGHT_CLICK_AIR) {
+            boolean frameClick = a == Action.RIGHT_CLICK_BLOCK
+                    && e.getClickedBlock().getType() == Material.END_PORTAL_FRAME;
+            if (frameClick && !PearlFactory.isStored(item)) return;
+
             e.setCancelled(true);
             e.setUseItemInHand(Event.Result.DENY);
             if (a == Action.RIGHT_CLICK_BLOCK && PearlFactory.isStored(item)) {
+                if (frameClick) {
+                    p.sendActionBar(Msg.cn("§6收复之眼不能填充末地传送门"));
+                    return;
+                }
                 if (onCooldown(p)) return;
                 handleDeploy(p, e.getClickedBlock(), e.getBlockFace(), item);
             }
@@ -145,7 +153,7 @@ public final class PearlInteractListener implements Listener {
             selected.anchor = anchor;
             selected.pathingArrived = false;
             selected.attackTargetUuid = null;
-            if (selected.entity instanceof Mob m) m.getPathfinder().moveTo(anchor, 1.2);
+            if (selected.entity instanceof Mob m) m.getPathfinder().moveTo(anchor, 2.5f);
             Effects.pathingArc(from, anchor, p);
             SelectionState.clear(qq);
             p.sendActionBar(Msg.cn("§e已派遣 §f" + nameOf(selected)));

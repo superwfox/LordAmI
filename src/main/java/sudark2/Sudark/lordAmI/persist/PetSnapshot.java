@@ -15,6 +15,7 @@ public class PetSnapshot {
     public boolean saddled;
 
     public byte[] head, chest, legs, feet, mainHand, offHand;
+    public byte[] horseSaddle, horseArmor;
 
     public State state = State.STORED;
     public UUID entityUuid;

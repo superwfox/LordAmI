@@ -48,6 +48,8 @@ public final class PetIdStore {
             snap.feet = decode(s.getString("eq.feet"));
             snap.mainHand = decode(s.getString("eq.mainHand"));
             snap.offHand = decode(s.getString("eq.offHand"));
+            snap.horseSaddle = decode(s.getString("eq.horseSaddle"));
+            snap.horseArmor = decode(s.getString("eq.horseArmor"));
             snap.state = PetSnapshot.State.valueOf(s.getString("state", "STORED"));
             String eu = s.getString("entityUuid");
             if (eu != null) snap.entityUuid = UUID.fromString(eu);
@@ -73,6 +75,8 @@ public final class PetIdStore {
             y.set(id + ".eq.feet", encode(snap.feet));
             y.set(id + ".eq.mainHand", encode(snap.mainHand));
             y.set(id + ".eq.offHand", encode(snap.offHand));
+            y.set(id + ".eq.horseSaddle", encode(snap.horseSaddle));
+            y.set(id + ".eq.horseArmor", encode(snap.horseArmor));
             y.set(id + ".state", snap.state.name());
             y.set(id + ".entityUuid", snap.entityUuid == null ? null : snap.entityUuid.toString());
             y.set(id + ".world", snap.world);

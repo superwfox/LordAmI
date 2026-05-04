@@ -4,11 +4,16 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.entity.AbstractHorse;
 import org.bukkit.entity.Ageable;
+import org.bukkit.entity.Horse;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Mob;
 import org.bukkit.entity.Steerable;
+import org.bukkit.entity.Tameable;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.HorseInventory;
 import org.bukkit.inventory.ItemStack;
 import sudark2.Sudark.lordAmI.persist.PetSnapshot;
 
@@ -23,6 +28,10 @@ public final class EntityIO {
         snap.maxHealth = readMaxHealth(e);
         if (e instanceof Ageable a) snap.age = a.getAge();
         if (e instanceof Steerable s) snap.saddled = s.hasSaddle();
+        if (e instanceof AbstractHorse h) {
+            snap.horseSaddle = ser(h.getInventory().getSaddle());
+            if (h.getInventory() instanceof HorseInventory hi) snap.horseArmor = ser(hi.getArmor());
+        }
 
         EntityEquipment eq = e.getEquipment();
         if (eq != null) {
@@ -51,6 +60,12 @@ public final class EntityIO {
 
         if (e instanceof Ageable a && snap.age != 0) a.setAge(snap.age);
         if (e instanceof Steerable s && snap.saddled) s.setSaddle(true);
+        if (e instanceof Tameable t) t.setTamed(true);
+        if (e instanceof AbstractHorse h) {
+            h.getInventory().setSaddle(des(snap.horseSaddle));
+            if (h.getInventory() instanceof HorseInventory hi) hi.setArmor(des(snap.horseArmor));
+        }
+        if (e instanceof Mob mob) mob.setCanPickupItems(true);
 
         EntityEquipment eq = e.getEquipment();
         if (eq != null) {
