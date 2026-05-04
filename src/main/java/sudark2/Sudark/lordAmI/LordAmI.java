@@ -14,6 +14,7 @@ import sudark2.Sudark.lordAmI.persist.ChunkLoadListener;
 import sudark2.Sudark.lordAmI.persist.PetIdStore;
 import sudark2.Sudark.lordAmI.persist.PetSnapshot;
 import sudark2.Sudark.lordAmI.pet.DeathListener;
+import sudark2.Sudark.lordAmI.pet.OwnerCombatListener;
 import sudark2.Sudark.lordAmI.pet.PetManager;
 import sudark2.Sudark.lordAmI.pet.PetTargetListener;
 import sudark2.Sudark.lordAmI.pet.PetTicker;
@@ -31,6 +32,7 @@ public final class LordAmI extends JavaPlugin {
         pm.registerEvents(new EggCaptureListener(), this);
         pm.registerEvents(new PearlInteractListener(this), this);
         pm.registerEvents(new PetTargetListener(), this);
+        pm.registerEvents(new OwnerCombatListener(), this);
         pm.registerEvents(new DeathListener(), this);
         pm.registerEvents(new ChunkLoadListener(), this);
 

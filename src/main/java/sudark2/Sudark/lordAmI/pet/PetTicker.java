@@ -2,9 +2,18 @@ package sudark2.Sudark.lordAmI.pet;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Allay;
+import org.bukkit.entity.Axolotl;
+import org.bukkit.entity.Camel;
+import org.bukkit.entity.Frog;
+import org.bukkit.entity.Hoglin;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Mob;
+import org.bukkit.entity.Piglin;
+import org.bukkit.entity.PiglinBrute;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Warden;
+import org.bukkit.entity.Zoglin;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import sudark2.Sudark.lordAmI.pearl.Effects;
@@ -98,12 +107,35 @@ public final class PetTicker extends BukkitRunnable {
             return;
         }
         org.bukkit.entity.Entity tgt = Bukkit.getEntity(pet.attackTargetUuid);
-        if (!(tgt instanceof LivingEntity le) || le.isDead() || !le.isValid()) {
+        if (!(tgt instanceof LivingEntity le) || le.isDead() || !le.isValid()
+                || le.getWorld() != mob.getWorld()) {
             endAttack(mob, pet);
             return;
         }
         if (mob.getTarget() != le) mob.setTarget(le);
+
+        if (usesBrainTargeting(mob)) {
+            double reach = mob.getWidth() / 2.0 + le.getWidth() / 2.0 + 1.5;
+            double dist = mob.getLocation().distance(le.getLocation());
+            if (dist > reach) {
+                if (emitPulse) mob.getPathfinder().moveTo(le.getLocation(), 1.3);
+            } else if (emitPulse) {
+                mob.attack(le);
+            }
+        }
         if (emitPulse) Effects.attackPulse(le);
+    }
+
+    private static boolean usesBrainTargeting(Mob mob) {
+        return mob instanceof Piglin
+                || mob instanceof PiglinBrute
+                || mob instanceof Hoglin
+                || mob instanceof Zoglin
+                || mob instanceof Warden
+                || mob instanceof Allay
+                || mob instanceof Frog
+                || mob instanceof Camel
+                || mob instanceof Axolotl;
     }
 
     private void endAttack(Mob mob, Pet pet) {
